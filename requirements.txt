@@ -1,5 +1,13 @@
+# Core Azure Functions runtime
+azure-functions
+
+# Key Vault — store and retrieve secrets securely
+azure-identity
+azure-keyvault-secrets
+
+# Blob Storage — upload files, trigger blob-triggered functions
+azure-storage-blob
+
 # Uncomment to enable Azure Monitor OpenTelemetry
 # Ref: aka.ms/functions-azure-monitor-python
 # azure-monitor-opentelemetry
-
-azure-functions

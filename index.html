@@ -596,6 +596,17 @@
     <p>Serverless Practice App</p>
   </div>
 
+  <div class="sidebar-section-label">Week 1 Tasks</div>
+
+  <a class="nav-item" href="#fn-health" onclick="setActive(this)">
+    <span class="icon">✅</span> Health Check API
+    <span class="nav-badge">GET</span>
+  </a>
+  <a class="nav-item" href="#fn-calc" onclick="setActive(this)">
+    <span class="icon">🧮</span> Calculator API
+    <span class="nav-badge">GET</span>
+  </a>
+
   <div class="sidebar-section-label">Azure Services</div>
 
   <a class="nav-item active" href="#fn-http" onclick="setActive(this)">
@@ -669,6 +680,139 @@
         <span class="hero-chip">📊 Application Insights</span>
         <span class="hero-chip">⏰ Timer Triggers</span>
         <span class="hero-chip">🌐 CORS-enabled APIs</span>
+      </div>
+    </div>
+
+    <!-- ════════════════════════════════
+         WEEK 1 — Health Check API
+    ════════════════════════════════ -->
+    <div class="section-card" id="fn-health">
+      <div class="card-header">
+        <div class="card-icon" style="background:#107c41;color:white;">✅</div>
+        <div class="card-header-text">
+          <h3>Week 1 · Task 2 — Health Check API</h3>
+          <p>The simplest possible API. A <code>GET /api/health</code> endpoint that returns <code>{"status":"running"}</code>. This verifies your Function App is deployed and reachable.</p>
+          <div class="service-tags">
+            <span class="service-tag tag-fn">Azure Functions</span>
+            <span class="service-tag tag-fn">HTTP Trigger</span>
+            <span class="service-tag" style="background:#e8f5e9;color:#107c41;">GET request</span>
+          </div>
+        </div>
+      </div>
+      <div class="card-body">
+        <div class="card-left">
+          <div class="pane-label">Live UI — Test Health Endpoint</div>
+          <div class="alert alert-info">
+            📍 <span>Set your base URL in the top bar, then click the button to ping your deployed Function App.</span>
+          </div>
+          <button class="btn btn-primary" onclick="callHealth()" id="health-btn">
+            <span id="health-spin"></span> GET /api/health
+          </button>
+          <div class="response-box" id="health-response">// Response will appear here</div>
+        </div>
+        <div class="card-right">
+          <div class="pane-label">Backend Blueprint — The Code</div>
+          <div class="alert alert-success">
+            ✅ <span>This route is already in your <code>function_app.py</code>. Run <code>func start</code> and hit the button.</span>
+          </div>
+          <div class="code-block">
+<span class="cm"># GET /api/health</span>
+@app.<span class="fn">route</span>(route=<span class="str">"health"</span>, methods=[<span class="str">"GET"</span>])
+<span class="kw">def</span> <span class="fn">health</span>(_req: func.HttpRequest):
+    logging.<span class="fn">info</span>(<span class="str">"Health check called"</span>)
+    <span class="kw">return</span> func.<span class="fn">HttpResponse</span>(
+        json.<span class="fn">dumps</span>({
+            <span class="str">"status"</span>: <span class="str">"running"</span>,
+            <span class="str">"timestamp"</span>: datetime.<span class="fn">now</span>(timezone.utc).<span class="fn">isoformat</span>()
+        }),
+        mimetype=<span class="str">"application/json"</span>
+    )</div>
+          <ul class="step-list">
+            <li>
+              <span class="step-num step-fn">1</span>
+              <div class="step-text"><strong>Local test:</strong> Run <code>func start</code>, then visit <code>http://localhost:7071/api/health</code> in browser or Postman — you should see <code>{"status":"running"}</code>.</div>
+            </li>
+            <li>
+              <span class="step-num step-fn">2</span>
+              <div class="step-text"><strong>What to tell your mentor:</strong> "This is my health check endpoint. In production, monitoring tools ping this URL every minute to confirm the service is up."</div>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <!-- ════════════════════════════════
+         WEEK 1 — Calculator API
+    ════════════════════════════════ -->
+    <div class="section-card" id="fn-calc">
+      <div class="card-header">
+        <div class="card-icon" style="background:#8764b8;color:white;">🧮</div>
+        <div class="card-header-text">
+          <h3>Week 1 · Task 3 — Calculator API (Azure Function)</h3>
+          <p>An Azure Function that accepts query parameters <code>?x=10&amp;y=20</code> and returns their sum. Demonstrates HTTP triggers, query param parsing, error handling, and logging.</p>
+          <div class="service-tags">
+            <span class="service-tag tag-fn">Azure Functions</span>
+            <span class="service-tag tag-fn">Query Params</span>
+            <span class="service-tag" style="background:#f3e8fa;color:#6b2d8b;">Error Handling</span>
+          </div>
+        </div>
+      </div>
+      <div class="card-body">
+        <div class="card-left">
+          <div class="pane-label">Live UI — Try the Calculator</div>
+          <div class="row">
+            <div class="field">
+              <label>x</label>
+              <input type="number" id="calc-x" value="10" />
+            </div>
+            <div class="field">
+              <label>y</label>
+              <input type="number" id="calc-y" value="20" />
+            </div>
+          </div>
+          <button class="btn btn-primary" onclick="callCalculate()">
+            <span id="calc-spin"></span> GET /api/calculate
+          </button>
+          <button class="btn btn-secondary" style="margin-left:8px;" onclick="callCalculateBad()">
+            Send Bad Input (error demo)
+          </button>
+          <div class="response-box" id="calc-response">// Response will appear here</div>
+        </div>
+        <div class="card-right">
+          <div class="pane-label">Backend Blueprint — The Code</div>
+          <div class="alert alert-success">
+            ✅ <span>This route is already in your <code>function_app.py</code>. Both the happy path and error path are handled.</span>
+          </div>
+          <div class="code-block">
+<span class="cm"># GET /api/calculate?x=10&y=20</span>
+@app.<span class="fn">route</span>(route=<span class="str">"calculate"</span>, methods=[<span class="str">"GET"</span>])
+<span class="kw">def</span> <span class="fn">calculate</span>(req: func.HttpRequest):
+    <span class="kw">try</span>:
+        x = <span class="fn">float</span>(req.params.<span class="fn">get</span>(<span class="str">"x"</span>, <span class="num">0</span>))
+        y = <span class="fn">float</span>(req.params.<span class="fn">get</span>(<span class="str">"y"</span>, <span class="num">0</span>))
+    <span class="kw">except</span> ValueError <span class="kw">as</span> e:
+        logging.<span class="fn">exception</span>(<span class="str">"Invalid params in /calculate"</span>)
+        <span class="kw">return</span> func.<span class="fn">HttpResponse</span>(
+            json.<span class="fn">dumps</span>({<span class="str">"error"</span>: <span class="str">"x and y must be numbers"</span>}),
+            status_code=<span class="num">400</span>, mimetype=<span class="str">"application/json"</span>)
+    <span class="kw">return</span> func.<span class="fn">HttpResponse</span>(
+        json.<span class="fn">dumps</span>({<span class="str">"x"</span>: x, <span class="str">"y"</span>: y, <span class="str">"sum"</span>: x + y}),
+        mimetype=<span class="str">"application/json"</span>)</div>
+          <ul class="step-list">
+            <li>
+              <span class="step-num step-fn">1</span>
+              <div class="step-text"><strong>Happy path:</strong> <code>GET /api/calculate?x=10&y=20</code> → <code>{"x":10,"y":20,"sum":30}</code></div>
+            </li>
+            <li>
+              <span class="step-num step-fn">2</span>
+              <div class="step-text"><strong>Error path:</strong> Send letters instead of numbers → function catches the <code>ValueError</code>, logs it with <code>logging.exception()</code>, and returns a clean <code>400</code>.</div>
+            </li>
+            <li>
+              <span class="step-num step-fn">3</span>
+              <div class="step-text"><strong>What to tell your mentor:</strong> "I learned how query parameters work in Azure Functions and added proper error handling with logging so errors show up in Application Insights."</div>
+            </li>
+          </ul>
+        </div>
       </div>
     </div>
 
@@ -1717,6 +1861,53 @@ logging.<span class="fn">info</span>(<span class="str">"task_created"</span>, ex
       box.className = 'response-box error';
     }
   }
+
+  // ── Health Check ────────────────────────────────────────
+  async function callHealth() {
+    const box = document.getElementById('health-response');
+    const spin = document.getElementById('health-spin');
+    const url = BASE_URL ? BASE_URL + '/health' : null;
+    if (!url) {
+      box.textContent = '// Set your base URL in the top bar first.\n// Locally: http://localhost:7071/api/health';
+      box.className = 'response-box';
+      return;
+    }
+    spin.innerHTML = '<span class="spinner"></span> ';
+    box.textContent = '// Calling...';
+    try {
+      const res = await fetch(url);
+      const data = await res.json();
+      box.textContent = JSON.stringify(data, null, 2);
+      box.className = 'response-box success';
+    } catch (e) {
+      box.textContent = '// Error: ' + e.message;
+      box.className = 'response-box error';
+    } finally { spin.innerHTML = ''; }
+  }
+
+  // ── Calculator ───────────────────────────────────────────
+  async function callCalculate(bad = false) {
+    const box = document.getElementById('calc-response');
+    const spin = document.getElementById('calc-spin');
+    const x = bad ? 'abc' : document.getElementById('calc-x').value;
+    const y = bad ? 'xyz' : document.getElementById('calc-y').value;
+    const url = BASE_URL
+      ? `${BASE_URL}/calculate?x=${x}&y=${y}`
+      : `http://localhost:7071/api/calculate?x=${x}&y=${y}`;
+    spin.innerHTML = '<span class="spinner"></span> ';
+    box.textContent = `// GET ${url.replace(BASE_URL || 'http://localhost:7071/api', '/api')}`;
+    try {
+      const res = await fetch(url);
+      const data = await res.json();
+      box.textContent = JSON.stringify(data, null, 2);
+      box.className = res.ok ? 'response-box success' : 'response-box error';
+    } catch (e) {
+      box.textContent = '// Error: ' + e.message + '\n// Is func start running?';
+      box.className = 'response-box error';
+    } finally { spin.innerHTML = ''; }
+  }
+
+  function callCalculateBad() { callCalculate(true); }
 
   // ── Toast ───────────────────────────────────────────────
   function showToast(msg) {
